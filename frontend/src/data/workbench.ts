@@ -1,4 +1,44 @@
-import type { FeatureItem, KpiItem, OperationRecord } from "../types";
+import type { FeatureItem, KpiItem, OperationRecord, Seat, SeatStatistics, ZoneSeatStatistics } from "../types";
+
+const now = new Date();
+const minutesAgo = (min: number) => new Date(now.getTime() - min * 60000).toISOString();
+
+export const localSeats: Seat[] = [
+  { id: 1, seatCode: "A01", zone: "HALL", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 2, seatCode: "A02", zone: "HALL", status: "IN_USE", memberName: "张三", memberLevel: "黄金会员", remainingMinutes: 125, startTime: minutesAgo(55), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 3, seatCode: "A03", zone: "HALL", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 4, seatCode: "A04", zone: "HALL", status: "IN_USE", memberName: "李四", memberLevel: "普通会员", remainingMinutes: 45, startTime: minutesAgo(75), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 5, seatCode: "A05", zone: "HALL", status: "FAULT", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 6, seatCode: "A06", zone: "HALL", status: "RESERVED", memberName: "王五", memberLevel: "钻石会员", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 7, seatCode: "A07", zone: "HALL", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 8, seatCode: "A08", zone: "HALL", status: "IN_USE", memberName: "赵六", memberLevel: "普通会员", remainingMinutes: 180, startTime: minutesAgo(30), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 9, seatCode: "B01", zone: "BOX", status: "IN_USE", memberName: "陈七", memberLevel: "钻石会员", remainingMinutes: 90, startTime: minutesAgo(90), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 10, seatCode: "B02", zone: "BOX", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 11, seatCode: "B03", zone: "BOX", status: "IN_USE", memberName: "周八", memberLevel: "黄金会员", remainingMinutes: 60, startTime: minutesAgo(120), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 12, seatCode: "B04", zone: "BOX", status: "RESERVED", memberName: "吴九", memberLevel: "黄金会员", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 13, seatCode: "B05", zone: "BOX", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 14, seatCode: "B06", zone: "BOX", status: "FAULT", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 15, seatCode: "V01", zone: "VIP", status: "IN_USE", memberName: "郑十", memberLevel: "钻石会员", remainingMinutes: 240, startTime: minutesAgo(60), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 16, seatCode: "V02", zone: "VIP", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 17, seatCode: "V03", zone: "VIP", status: "IN_USE", memberName: "冯十一", memberLevel: "钻石会员", remainingMinutes: 150, startTime: minutesAgo(45), createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 18, seatCode: "V04", zone: "VIP", status: "RESERVED", memberName: "钱十二", memberLevel: "钻石会员", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+  { id: 19, seatCode: "V05", zone: "VIP", status: "AVAILABLE", remainingMinutes: 0, createdAt: now.toISOString(), updatedAt: now.toISOString() },
+];
+
+export const localSeatStatistics: SeatStatistics = {
+  totalSeats: 19,
+  availableSeats: 9,
+  inUseSeats: 7,
+  faultSeats: 2,
+  reservedSeats: 3,
+  occupancyRate: 36.8,
+};
+
+export const localZoneStatistics: ZoneSeatStatistics[] = [
+  { zone: "HALL", zoneLabel: "大厅", totalSeats: 8, availableSeats: 4, inUseSeats: 3, faultSeats: 1, reservedSeats: 1 },
+  { zone: "BOX", zoneLabel: "包厢", totalSeats: 6, availableSeats: 2, inUseSeats: 2, faultSeats: 1, reservedSeats: 1 },
+  { zone: "VIP", zoneLabel: "VIP区", totalSeats: 5, availableSeats: 3, inUseSeats: 2, faultSeats: 0, reservedSeats: 1 },
+];
 
 export const localFeatures: FeatureItem[] = [
   {
@@ -40,27 +80,27 @@ export const localFeatures: FeatureItem[] = [
 
 export const localKpis: KpiItem[] = [
   {
-    "label": "今日处理",
-    "value": "106",
-    "trend": "+12%",
+    "label": "上座率",
+    "value": "36.8%",
+    "trend": "7 台使用中",
     "tone": "primary"
   },
   {
-    "label": "预约/订单",
-    "value": "43",
-    "trend": "+8%",
-    "tone": "warm"
-  },
-  {
-    "label": "履约率",
-    "value": "91%",
-    "trend": "+3%",
+    "label": "空闲机位",
+    "value": "9",
+    "trend": "19 台总计",
     "tone": "cool"
   },
   {
-    "label": "待处理",
-    "value": "10",
-    "trend": "需跟进",
+    "label": "使用中",
+    "value": "7",
+    "trend": "9 台可上",
+    "tone": "warm"
+  },
+  {
+    "label": "故障机位",
+    "value": "2",
+    "trend": "需维修",
     "tone": "neutral"
   }
 ];
